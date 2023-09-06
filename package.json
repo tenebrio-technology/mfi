@@ -2,20 +2,44 @@
   "name": "api-srv",
   "version": "1.0.0",
   "description": "Tenebrio Technoloies api server",
-  "main": "index.js",
   "scripts": {
-    "start": "babel-node src/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "ts-node src/index.ts",
+    "watch": "nodemon --exec ts-node src/index.ts",
+    "test": "jest",
+    "test:watch": "jest --watch"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@babel/cli": "^7.22.15",
-    "@babel/core": "^7.22.15",
-    "@babel/node": "^7.22.15",
-    "@babel/plugin-proposal-decorators": "^7.22.15",
-    "@babel/preset-env": "^7.22.15",
-    "express": "^4.18.2"
+    "body-parser": "^1.20.2",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.2",
+    "morgan": "^1.10.0",
+    "nodemon": "^3.0.1",
+    "passport": "^0.6.0",
+    "passport-jwt": "^4.0.1",
+    "passport-local": "^1.0.0",
+    "reflect-metadata": "^0.1.13",
+    "sequelize": "^6.32.1",
+    "sequelize-typescript": "^2.1.5",
+    "sqlite3": "^5.1.6",
+    "ts-node": "^10.9.1",
+    "tslib": "^2.6.2",
+    "winston": "^3.10.0"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.17",
+    "@types/jest": "^29.5.4",
+    "@types/morgan": "^1.9.5",
+    "@types/node": "^20.5.9",
+    "@types/passport": "^1.0.12",
+    "@types/passport-jwt": "^3.0.9",
+    "@types/passport-local": "^1.0.35",
+    "@types/validator": "^13.11.1",
+    "jest": "^29.6.4",
+    "npm": "^10.0.0",
+    "ts-jest": "^29.1.1",
+    "typescript": "^5.2.2"
   }
 }
