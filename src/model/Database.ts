@@ -12,7 +12,7 @@ export class Database extends Sequelize {
      return new Database({...options, logging: logger.data.bind(logger)}); 
   }
 
-  constructor(options: SequelizeOptions) {
+  constructor(options: SequelizeOptions, logger?: IDBLogger) {
     super({ ...options, models: [User] }); 
   }
 

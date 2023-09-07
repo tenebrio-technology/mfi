@@ -9,6 +9,8 @@ import { Strategy as LocalStrategy } from 'passport-local';
 import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
 import { IServerLogger } from "./types/types"; 
 import { Services } from "./services"; 
+import { Database } from "./model"; 
+import { Routes } from "./routes"; 
 
 export class Server { 
 
@@ -19,32 +21,24 @@ export class Server {
   instance?: http.Server; 
   address?: AddressInfo; 
   services: Services; 
+  routes: Routes; 
 
-  constructor(logger?: IServerLogger) { 
+  constructor(storage: Database, logger?: IServerLogger) { 
 
     this.express = express(); 
-    this.logger = this.initializeLogging(logger); 
 
+    this.logger = this.initializeLogging(logger); 
     this.logger.info("Tenebrio API Server"); 
+
+    this.services = new Services(storage, this.logger); 
     this.initializeSecurity(); 
-/*
-    passport.serializeUser((user, done) => done(null, user));
-    passport.deserializeUser((user, done) => done(null, user));
-    passport.use(new LocalStrategy({session: false}, (username, word, done) => done(null, username))); 
-    passport.use(new JwtStrategy( {
-      secretOrKey: 'SECRET',
-      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken()
-    },  (token, done) => { 
-      console.log("Here! - token: ", token); 
-      done(null, token); 
-    }));
 
     this.express.use(bodyParser.urlencoded({ extended: true }));
     this.express.use(bodyParser.json());
-    
-    this.express.post("/login", passport.authenticate('local', {session: false}), (req, res) => res.send("done.")); 
-    this.express.get("/", passport.authenticate('jwt', {session: false}), (req, res) => res.send("Hello World!")); 
-    */
+
+    this.routes = new Routes("/", this.services, this.logger); 
+    this.express.use(this.routes.router()); 
+  
   }
 
   initializeLogging(logger?: IServerLogger): IServerLogger { 
@@ -70,6 +64,7 @@ export class Server {
     passport.serializeUser(this.services.auth.serializeUser.bind(this.services.auth));
     passport.deserializeUser(this.services.auth.deserializeUser.bind(this.services.auth));
 
+    passport.use(new LocalStrategy({session: false}, (username, passsword, done) => this.services.auth.localStrategy.bind(this.services.auth))); 
     passport.use(new JwtStrategy( {
       secretOrKey: 'SECRET',
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken()
@@ -78,7 +73,7 @@ export class Server {
       done(null, token.user); 
     }));
 
-    this.express.post("/login", passport.authenticate('local', { session: false}), authRoutes.login.bind(authRoutes)); 
+    //** Pickup here - attach auth routes and add tests for it.  */
 
   }
 

@@ -1,7 +1,12 @@
 import { BaseService } from "."; 
 import { User, IUser } from "../model/User"; 
 
+
+import jwt from "jsonwebtoken"; 
+
 export class AuthService extends BaseService { 
+
+
 
   // Called via passport to validate user credentials. 
   async localStrategy(username:string, password:string, done:(err:string | null, user?: any) => void) {
@@ -17,6 +22,14 @@ export class AuthService extends BaseService {
 
   async deserializeUser(id: string, done:(err:string, user: IUser) => void) { 
     const user = await User.findByPk(id); 
+    console.debug("User: ", user.get()); 
     return done(null, user.get()); 
   }
+
+  createToken(user) { 
+    const token = jwt.sign({user}, 'SECRET'); 
+    console.log(`Token '${token}`); 
+    return token; 
+  }
+
 }

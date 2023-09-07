@@ -1,6 +1,7 @@
 import { AuthService } from "."; 
 import { Database } from "../model"; 
 import { IServerLogger } from "../types/types"; 
+import jwt from "jsonwebtoken"; 
 
 export class Services { 
 
@@ -10,4 +11,5 @@ export class Services {
     this.auth = new AuthService(this, storage, logger); 
   } 
 
+ 
 }

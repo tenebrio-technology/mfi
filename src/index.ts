@@ -1,4 +1,6 @@
-import { Server } from './server'; 
+import { Server } from "./server"; 
+import { Database } from "./model"; 
+
 import winston  from 'winston';
 
 export * from "./server";  
@@ -14,5 +16,7 @@ const logger = winston.createLogger({
                 }) ]
 });
 
-let server = new Server(logger); 
+const storage = new Database({dialect: 'sqlite', storage: ':memory:'}, logger);
+const server = new Server(storage, logger); 
+
 server.listen(4000); 
