@@ -1,19 +1,30 @@
+import { BaseRoutes, IRoute } from '.';
+import { IUser } from "../model"; 
+import passport from 'passport';
+import { Request, Response } from 'express';
 
-import { BaseRoutes, IRoute } from "."; 
-import { Request, Response } from "express"; 
-import passport from "passport"; 
-
-export class AuthRoutes extends BaseRoutes { 
-
+export class AuthRoutes extends BaseRoutes {
   routes: IRoute[] = [
-    {path: "/login", secure: false, method: "post", handler: this.login.bind(this)},
+    {
+      path: '/login',
+      secure: false,
+      method: 'post',
+      handler: this.login.bind(this),
+    },
   ];
-  secureMiddleware = passport.authenticate('jwt', { session: false }); 
+  secureMiddleware = passport.authenticate('jwt', { session: false });
 
-  async login(req: Request, res: Response) { 
-    const { username } = req.body; 
-    const token = this.services.auth.createToken(username); 
-    return res.json(this.successResponse({username, token})); 
+  async login(req: Request, res: Response): Promise<Response> { 
+    
+    passport.authenticate("local", (err: string, user: IUser) => { 
+      if(user) { 
+        const token = this.services.auth.createToken(user); 
+        return res.json(this.successResponse({user, token})); 
 
+      }
+      return res.status(200).json(this.errorResponse(err || "unspecified error"));
+    })(req, res);
+    return null; 
   }
+
 }

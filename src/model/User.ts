@@ -1,20 +1,22 @@
-import { Table, Model, Column, PrimaryKey } from 'sequelize-typescript';
+import { DataTypes, Model, InferAttributes, InferCreationAttributes, CreationOptional } from '@sequelize/core';
+import { Attribute, PrimaryKey, AutoIncrement, NotNull } from '@sequelize/core/decorators-legacy';
+
 
 export interface IUser { 
   id: number; 
   username: string; 
 }
 
-@Table
-export class User extends Model implements IUser { 
+export class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
+  @Attribute(DataTypes.INTEGER)
+  @PrimaryKey
+  @AutoIncrement
+  declare id: CreationOptional<number>;
 
-    @PrimaryKey @Column
-    declare id: number; 
+  @Attribute(DataTypes.STRING)
+  @NotNull
+  declare username: string;
 
-    @Column 
-    declare username: string;
-
-    @Column
-    declare password: string;
+  @Attribute(DataTypes.STRING)
+  declare password: string | null;
 }
-

@@ -1,7 +1,3 @@
-import { BaseService } from "."; 
-import { User, IUser } from "../model"; 
+import { BaseService } from '.';
 
-export class UserService extends BaseService { 
-
-
-}
+export class UserService extends BaseService {}

@@ -1,15 +1,11 @@
-import { AuthService } from "."; 
-import { Database } from "../model"; 
-import { IServerLogger } from "../types/types"; 
-import jwt from "jsonwebtoken"; 
+import { AuthService } from '.';
+import { Database } from '../model';
+import { IServerLogger } from '../types/types';
 
-export class Services { 
+export class Services {
+  auth: AuthService;
 
-  auth: AuthService; 
-
-  constructor(storage : Database, logger: IServerLogger) {
-    this.auth = new AuthService(this, storage, logger); 
-  } 
-
- 
+  constructor(storage: Database, logger: IServerLogger) {
+    this.auth = new AuthService(this, storage, logger);
+  }
 }

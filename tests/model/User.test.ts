@@ -1,31 +1,22 @@
-import { Database, User } from "../../src/model"; 
-import { MockLogger } from "../helpers/Logger.mock";
+import { User } from '../../src/model';
+import { MockLogger, TestDatabase } from '../helpers';
 
-describe("Create a new user", () => { 
+describe('Create a new user', () => {
+  let db: TestDatabase;
+  const logger = new MockLogger();
 
-  let db: Database; 
-  let logger = new MockLogger(); 
-
-  beforeAll(async () => { 
-
-    db = await Database.connect({dialect: 'sqlite', storage: ':memory:'}, logger); 
-    await db.build({force: true}); 
-
+  beforeAll(async () => {
+    db = new TestDatabase(logger);
+    await db.build({ force: true });
+    await db.populate();
   });
 
-  afterAll(async () => { 
-
-    await db.close(); 
-    console.log(logger.last()); 
-
+  afterAll(async () => {
+    await db.close();
   });
 
-  test('Create a new user', async() => {
-
-    const user = await User.create({username: 'test', password: 'test'}); 
-    expect(user).toMatchObject({username: 'test', password: 'test'});
-
+  test('Create a new user', async () => {
+    const user = await User.create({ username: 'test', password: 'test' });
+    expect(user).toMatchObject({ username: 'test', password: 'test' });
   });
-
-
 });

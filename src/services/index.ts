@@ -1,4 +1,3 @@
-export * from "./BaseService"; 
-export * from "./AuthService"; 
-export * from "./Services"; 
-
+export * from './BaseService';
+export * from './AuthService';
+export * from './Services';

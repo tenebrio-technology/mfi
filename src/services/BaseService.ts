@@ -1,19 +1,15 @@
-
-import { Services } from "./Services"; 
-import { Database } from "../model"; 
-import { IServerLogger } from "../types/types"; 
-
+import { Services } from './Services';
+import { Database } from '../model';
+import { IServerLogger } from '../types/types';
 
 export class BaseService {
+  services: Services;
+  storage: Database;
+  logger: IServerLogger;
 
-    services: Services; 
-    storage: Database; 
-    logger: IServerLogger; 
-
-    constructor(services: Services, storage: Database, logger: IServerLogger) {
-      this.services = services; 
-      this.storage = storage; 
-      this.logger = logger; 
-    }
-  
+  constructor(services: Services, storage: Database, logger: IServerLogger) {
+    this.services = services;
+    this.storage = storage;
+    this.logger = logger;
+  }
 }
