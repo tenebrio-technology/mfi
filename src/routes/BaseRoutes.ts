@@ -35,8 +35,8 @@ export class BaseRoutes {
     success: false,
     errors: [msg],
   });
-  successResponse = (payload: any): ISuccessResponse => ({
+  successResponse = (payload: any = null): ISuccessResponse => ({
     success: true,
-    ...payload,
+    payload,
   });
 }

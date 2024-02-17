@@ -18,7 +18,6 @@ export class AuthService extends BaseService {
     user: IUser,
     done: (err: string, user: string) => void,
   ): Promise<void> {
-    this.logger.debug('serializeUser');
     return done(null, `${user.id}`);
   }
 
@@ -27,12 +26,17 @@ export class AuthService extends BaseService {
     done: (err: string, user: IUser) => void,
   ): Promise<void> {
     const user = await User.findByPk(id);
-    console.debug('User: ', user.get());
     return done(null, user.get());
   }
 
-  createToken(user): string {
+  createToken(user: IUser): string {
     const token = jwt.sign({ user }, 'SECRET');
     return token;
+  }
+
+  decryptToken(token: string): IUser {
+    const payload = jwt.decode(token);
+    if (payload) return payload['user'] as IUser;
+    return null;
   }
 }

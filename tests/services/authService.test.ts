@@ -80,4 +80,10 @@ describe('AuthService', () => {
       return done();
     });
   });
+
+  test('decrypt token', (done) => {
+    const token = auth.createToken({ username: 'testuser', id: 1 });
+    expect(auth.decryptToken(token)).toHaveProperty('username', 'testuser');
+    return done();
+  });
 });

@@ -34,7 +34,7 @@ export class Server {
     this.express.use(bodyParser.urlencoded({ extended: true }));
     this.express.use(bodyParser.json());
 
-    this.express.use(Cors()); 
+    this.express.use(Cors());
 
     this.routes = new Routes('/', this.services, this.logger);
     this.express.use(this.routes.router());
@@ -82,13 +82,10 @@ export class Server {
           jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
         },
         (token, done) => {
-          this.logger.debug('Here! - token: ', token);
           done(null, token.user);
         },
       ),
     );
-
-    //** Pickup here - attach auth routes and add tests for it.  */
   }
 
   async listen(port?: number): Promise<boolean> {
@@ -101,9 +98,12 @@ export class Server {
       await new Promise((r) => setTimeout(r, 10));
       wait -= 10;
     }
-    this.logger.info(
-      `Listening on ${(this.instance.address() as AddressInfo).port}`,
-    );
+
+    if (!this.listening) this.logger.error(`Failed to attach to port`);
+    else
+      this.logger.info(
+        `Listening on ${(this.instance.address() as AddressInfo).port}`,
+      );
     return this.listening;
   }
 

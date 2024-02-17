@@ -1,13 +1,32 @@
-import { DataTypes, Model, InferAttributes, InferCreationAttributes, CreationOptional } from '@sequelize/core';
-import { Attribute, PrimaryKey, AutoIncrement, NotNull } from '@sequelize/core/decorators-legacy';
+import {
+  DataTypes,
+  Model,
+  InferAttributes,
+  InferCreationAttributes,
+  CreationOptional,
+  CreationAttributes,
+} from '@sequelize/core';
+import {
+  Attribute,
+  PrimaryKey,
+  AutoIncrement,
+  NotNull,
+} from '@sequelize/core/decorators-legacy';
 
+/*
+export interface IUser {
+  id: number;
+  username: string;
+}*/
 
-export interface IUser { 
-  id: number; 
-  username: string; 
-}
+export interface UserAttributes extends InferAttributes<User> {}
+export interface UserCreationAttributes extends InferCreationAttributes<User> {}
+export interface IUser extends CreationAttributes<User> {}
 
-export class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
+export class User
+  extends Model<UserAttributes, UserCreationAttributes>
+  implements IUser
+{
   @Attribute(DataTypes.INTEGER)
   @PrimaryKey
   @AutoIncrement
@@ -18,5 +37,5 @@ export class User extends Model<InferAttributes<User>, InferCreationAttributes<U
   declare username: string;
 
   @Attribute(DataTypes.STRING)
-  declare password: string | null;
+  declare password: CreationOptional<string | null>;
 }

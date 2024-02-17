@@ -1,6 +1,6 @@
 import { Server } from './server';
 import { Database } from './model';
-import { sequelizeConfig } from "./config"; 
+import { sequelizeConfig } from './config';
 
 import winston from 'winston';
 
@@ -30,7 +30,7 @@ const logger = winston.createLogger({
   ],
 });
 const storage = new Database(sequelizeConfig(), logger);
-//storage.build({alter: true}); 
+//storage.build({alter: true});
 const server = new Server(storage, logger);
 
 server.listen(4000);
